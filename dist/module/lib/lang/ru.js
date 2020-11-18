@@ -1,0 +1,55 @@
+/**
+ *
+ * @param f1 - 1
+ * @param f - 21, 31, ...
+ * @param s - 2-4, 22-24, 32-34 ...
+ * @param t - 5-20, 25-30, ...
+ * @param n
+ * @returns
+ */
+function formatNum(f1, f, s, t, n) {
+    const n10 = n % 10;
+    let str = t;
+    if (n === 1) {
+        str = f1;
+    }
+    else if (n10 === 1 && n > 20) {
+        str = f;
+    }
+    else if (n10 > 1 && n10 < 5 && (n > 20 || n < 10)) {
+        str = s;
+    }
+    return str;
+}
+const seconds = formatNum.bind(null, 'секунду', '%s секунду', '%s секунды', '%s секунд'), minutes = formatNum.bind(null, 'минуту', '%s минуту', '%s минуты', '%s минут'), hours = formatNum.bind(null, 'час', '%s час', '%s часа', '%s часов'), days = formatNum.bind(null, 'день', '%s день', '%s дня', '%s дней'), weeks = formatNum.bind(null, 'неделю', '%s неделю', '%s недели', '%s недель'), months = formatNum.bind(null, 'месяц', '%s месяц', '%s месяца', '%s месяцев'), years = formatNum.bind(null, 'год', '%s год', '%s года', '%s лет');
+// @ts-ignore
+export default function (number, index) {
+    switch (index) {
+        case 0:
+            return ['только что', 'через несколько секунд'];
+        case 1:
+            return [seconds(number) + ' назад', 'через ' + seconds(number)];
+        case 2: // ['минуту назад', 'через минуту'];
+        case 3:
+            return [minutes(number) + ' назад', 'через ' + minutes(number)];
+        case 4: // ['час назад', 'через час'];
+        case 5:
+            return [hours(number) + ' назад', 'через ' + hours(number)];
+        case 6:
+            return ['вчера', 'завтра'];
+        case 7:
+            return [days(number) + ' назад', 'через ' + days(number)];
+        case 8: // ['неделю назад', 'через неделю'];
+        case 9:
+            return [weeks(number) + ' назад', 'через ' + weeks(number)];
+        case 10: // ['месяц назад', 'через месяц'];
+        case 11:
+            return [months(number) + ' назад', 'через ' + months(number)];
+        case 12: // ['год назад', 'через год'];
+        case 13:
+            return [years(number) + ' назад', 'через ' + years(number)];
+        default:
+            return ['', ''];
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicnUuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9zcmMvbGliL2xhbmcvcnUudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7O0dBUUc7QUFDSCxTQUFTLFNBQVMsQ0FBQyxFQUFVLEVBQUUsQ0FBUyxFQUFFLENBQVMsRUFBRSxDQUFTLEVBQUUsQ0FBUztJQUN2RSxNQUFNLEdBQUcsR0FBRyxDQUFDLEdBQUcsRUFBRSxDQUFBO0lBQ2xCLElBQUksR0FBRyxHQUFHLENBQUMsQ0FBQTtJQUVYLElBQUksQ0FBQyxLQUFLLENBQUMsRUFBRTtRQUNYLEdBQUcsR0FBRyxFQUFFLENBQUE7S0FDVDtTQUFNLElBQUksR0FBRyxLQUFLLENBQUMsSUFBSSxDQUFDLEdBQUcsRUFBRSxFQUFFO1FBQzlCLEdBQUcsR0FBRyxDQUFDLENBQUE7S0FDUjtTQUFNLElBQUksR0FBRyxHQUFHLENBQUMsSUFBSSxHQUFHLEdBQUcsQ0FBQyxJQUFJLENBQUMsQ0FBQyxHQUFHLEVBQUUsSUFBSSxDQUFDLEdBQUcsRUFBRSxDQUFDLEVBQUU7UUFDbkQsR0FBRyxHQUFHLENBQUMsQ0FBQTtLQUNSO0lBRUQsT0FBTyxHQUFHLENBQUE7QUFDWixDQUFDO0FBRUQsTUFBTSxPQUFPLEdBQUcsU0FBUyxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUUsU0FBUyxFQUFFLFlBQVksRUFBRSxZQUFZLEVBQUUsV0FBVyxDQUFDLEVBQ3RGLE9BQU8sR0FBRyxTQUFTLENBQUMsSUFBSSxDQUFDLElBQUksRUFBRSxRQUFRLEVBQUUsV0FBVyxFQUFFLFdBQVcsRUFBRSxVQUFVLENBQUMsRUFDOUUsS0FBSyxHQUFHLFNBQVMsQ0FBQyxJQUFJLENBQUMsSUFBSSxFQUFFLEtBQUssRUFBRSxRQUFRLEVBQUUsU0FBUyxFQUFFLFVBQVUsQ0FBQyxFQUNwRSxJQUFJLEdBQUcsU0FBUyxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUUsTUFBTSxFQUFFLFNBQVMsRUFBRSxRQUFRLEVBQUUsU0FBUyxDQUFDLEVBQ25FLEtBQUssR0FBRyxTQUFTLENBQUMsSUFBSSxDQUFDLElBQUksRUFBRSxRQUFRLEVBQUUsV0FBVyxFQUFFLFdBQVcsRUFBRSxXQUFXLENBQUMsRUFDN0UsTUFBTSxHQUFHLFNBQVMsQ0FBQyxJQUFJLENBQUMsSUFBSSxFQUFFLE9BQU8sRUFBRSxVQUFVLEVBQUUsV0FBVyxFQUFFLFlBQVksQ0FBQyxFQUM3RSxLQUFLLEdBQUcsU0FBUyxDQUFDLElBQUksQ0FBQyxJQUFJLEVBQUUsS0FBSyxFQUFFLFFBQVEsRUFBRSxTQUFTLEVBQUUsUUFBUSxDQUFDLENBQUE7QUFFcEUsYUFBYTtBQUNiLE1BQU0sQ0FBQyxPQUFPLFdBQVcsTUFBYyxFQUFFLEtBQWE7SUFDcEQsUUFBUSxLQUFLLEVBQUU7UUFDYixLQUFLLENBQUM7WUFDSixPQUFPLENBQUMsWUFBWSxFQUFFLHdCQUF3QixDQUFDLENBQUE7UUFDakQsS0FBSyxDQUFDO1lBQ0osT0FBTyxDQUFDLE9BQU8sQ0FBQyxNQUFNLENBQUMsR0FBRyxRQUFRLEVBQUUsUUFBUSxHQUFHLE9BQU8sQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFBO1FBQ2pFLEtBQUssQ0FBQyxDQUFDLENBQUMsb0NBQW9DO1FBQzVDLEtBQUssQ0FBQztZQUNKLE9BQU8sQ0FBQyxPQUFPLENBQUMsTUFBTSxDQUFDLEdBQUcsUUFBUSxFQUFFLFFBQVEsR0FBRyxPQUFPLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQTtRQUNqRSxLQUFLLENBQUMsQ0FBQyxDQUFDLDhCQUE4QjtRQUN0QyxLQUFLLENBQUM7WUFDSixPQUFPLENBQUMsS0FBSyxDQUFDLE1BQU0sQ0FBQyxHQUFHLFFBQVEsRUFBRSxRQUFRLEdBQUcsS0FBSyxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUE7UUFDN0QsS0FBSyxDQUFDO1lBQ0osT0FBTyxDQUFDLE9BQU8sRUFBRSxRQUFRLENBQUMsQ0FBQTtRQUM1QixLQUFLLENBQUM7WUFDSixPQUFPLENBQUMsSUFBSSxDQUFDLE1BQU0sQ0FBQyxHQUFHLFFBQVEsRUFBRSxRQUFRLEdBQUcsSUFBSSxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUE7UUFDM0QsS0FBSyxDQUFDLENBQUMsQ0FBQyxvQ0FBb0M7UUFDNUMsS0FBSyxDQUFDO1lBQ0osT0FBTyxDQUFDLEtBQUssQ0FBQyxNQUFNLENBQUMsR0FBRyxRQUFRLEVBQUUsUUFBUSxHQUFHLEtBQUssQ0FBQyxNQUFNLENBQUMsQ0FBQyxDQUFBO1FBQzdELEtBQUssRUFBRSxDQUFDLENBQUMsa0NBQWtDO1FBQzNDLEtBQUssRUFBRTtZQUNMLE9BQU8sQ0FBQyxNQUFNLENBQUMsTUFBTSxDQUFDLEdBQUcsUUFBUSxFQUFFLFFBQVEsR0FBRyxNQUFNLENBQUMsTUFBTSxDQUFDLENBQUMsQ0FBQTtRQUMvRCxLQUFLLEVBQUUsQ0FBQyxDQUFDLDhCQUE4QjtRQUN2QyxLQUFLLEVBQUU7WUFDTCxPQUFPLENBQUMsS0FBSyxDQUFDLE1BQU0sQ0FBQyxHQUFHLFFBQVEsRUFBRSxRQUFRLEdBQUcsS0FBSyxDQUFDLE1BQU0sQ0FBQyxDQUFDLENBQUE7UUFDN0Q7WUFDRSxPQUFPLENBQUMsRUFBRSxFQUFFLEVBQUUsQ0FBQyxDQUFBO0tBQ2xCO0FBQ0gsQ0FBQyJ9
