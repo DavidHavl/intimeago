@@ -39,7 +39,7 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
 
   // Dispatch the event.
   // @ts-ignore
-  node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { diff }))
+  node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { detail: { diff } }))
 
   const timerId = (setTimeout(() => {
     runSingle(node, datetime, localeFunction, options)

@@ -96,7 +96,7 @@ setup(nodes, 'en_US', { relativeDate: '2020-10-04' })
 
 // subscribe to an event that happens on update (change of text of the element)
 node.addEventListener('intimeago-update', (e) => {
- // e.diff // difference between the specified date and now/relativeDate (in seconds)
+ // e.detail.diff // difference between the specified date and now/relativeDate (in seconds)
 })
 ```
 

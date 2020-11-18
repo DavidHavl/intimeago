@@ -1176,7 +1176,7 @@
         node.innerText = formatDiff(diff, localeFunction);
         // Dispatch the event.
         // @ts-ignore
-        node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { diff }));
+        node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { detail: { diff } }));
         const timerId = setTimeout(() => {
             runSingle(node, datetime, localeFunction, options);
         }, Math.min(Math.max(nextInterval(diff), 1) * 1000, 0x7fffffff));

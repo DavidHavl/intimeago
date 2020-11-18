@@ -327,7 +327,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/index.ts": {
-        "version": "a17cbb6189895f61e8d8e1956fd61619098b14b7b2fa99dbccc808ebeea423e1",
+        "version": "5a8645630d5ccb40873da98274f9fbaf663e2e938023e3d36bbb43a6136e99db",
         "signature": "632836edaa4c97b13e8bdbca894cb6ba2dd70d8750c52936d8f6fd1f22d55cda",
         "affectsGlobalScope": false
       },
