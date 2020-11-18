@@ -327,8 +327,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/index.ts": {
-        "version": "5d6c2d7d5b910455d4ad95eb4a4b07f34083b874fea671aaac19a255b08f2afb",
-        "signature": "8dde8281e3650e32d417f4cef3fc45eaf27fa549f077d7fde868b5ad93cf99cd",
+        "version": "a17cbb6189895f61e8d8e1956fd61619098b14b7b2fa99dbccc808ebeea423e1",
+        "signature": "632836edaa4c97b13e8bdbca894cb6ba2dd70d8750c52936d8f6fd1f22d55cda",
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
@@ -342,7 +342,7 @@
         "affectsGlobalScope": false
       },
       "../src/lib/index.spec.ts": {
-        "version": "141fb8274acee1b82a9dc13b82b329e0579d336e2d9d55d4ad67d4af543c6cf4",
+        "version": "3da6894acbd49a21f7014582437e98552cf5f87a5cb71227839583d380502455",
         "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },

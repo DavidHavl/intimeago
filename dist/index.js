@@ -1227,6 +1227,11 @@
      * @param options
      */
     const format = (date, locale, options) => {
+        locale = locale || 'en_US';
+        // import needed locale
+        if (!isLocaleImported(locale)) {
+            importLocale(locale);
+        }
         // diff seconds
         const sec = diffSec(date, options && options.relativeDate);
         // format it with locale

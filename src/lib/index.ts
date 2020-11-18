@@ -95,7 +95,14 @@ export function setup(elements: HTMLElement | HTMLElement[] | NodeList, locale?:
  * @param locale
  * @param options
  */
-export const format = (date: TDatetime, locale?: string, options?: SetupOptions): string => {
+export const format = (date: TDatetime, locale?: LocaleName, options?: SetupOptions): string => {
+
+  locale = locale || 'en_US'
+  // import needed locale
+  if (!isLocaleImported(locale)) {
+    importLocale(locale)
+  }
+
   // diff seconds
   const sec = diffSec(date, options && options.relativeDate)
   // format it with locale
