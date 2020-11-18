@@ -1,14 +1,21 @@
 {
   "name": "intimeago",
   "version": "1.0.0",
-  "description": "In Time/Time Ago with events",
+  "description": "Convert dom elements with static datetime info into real-time 'in time' / 'time ago' ones.",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/module/index.js",
   "unpkg": "dist/index.min.js",
   "repository": "https://github.com/DavidHavl/intimeago",
   "license": "MIT",
-  "keywords": [],
+  "keywords": [
+    "typescript",
+    "intime",
+    "timeago"
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/davidhavl"
+  },
   "scripts": {
     "build": "run-p build:*",
     "build:main": "tsc -p tsconfig.json",
