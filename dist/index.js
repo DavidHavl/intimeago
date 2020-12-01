@@ -1182,16 +1182,16 @@
         const { relativeDate } = options;
         // get diff seconds
         const diff = diffSec(datetime, relativeDate);
-        if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
-            node.remove();
-            return;
-        }
         const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME);
         // render
         node.innerText = (prepend ? prepend : '') + formatDiff(diff, localeFunction);
         // Dispatch the event.
         // @ts-ignore
         node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { detail: { diff } }));
+        if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
+            node.remove();
+            return;
+        }
         const nextInt = nextInterval(diff);
         const timerId = setTimeout(() => {
             runSingle(node, datetime, localeFunction, options);
