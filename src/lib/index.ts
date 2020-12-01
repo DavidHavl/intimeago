@@ -42,6 +42,7 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
 
   if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
     node.remove()
+    return
   }
 
 
