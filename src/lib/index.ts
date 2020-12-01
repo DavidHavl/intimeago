@@ -10,6 +10,7 @@ import { getLocale, importLocale, isLocaleImported } from './utils/locale'
 
 export const DATETIME_ATTRIBUTE_NAME = 'data-intimeago-datetime'
 export const PREPEND_TEXT_ATTRIBUTE_NAME = 'data-intimeago-prepend-text'
+export const REMOVE_ON_ZERO_ATTRIBUTE_NAME = 'data-intimeago-remove-on-zero'
 export const UPDATE_EVENT_NAME = 'intimeago-update'
 
 const TIMER_POOL: TimerPool = {}
@@ -38,6 +39,12 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
 
   // get diff seconds
   const diff = diffSec(datetime, relativeDate)
+
+  if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
+    node.remove()
+  }
+
+
   const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME)
   // render
   node.innerText = (prepend ? prepend : '') + formatDiff(diff, localeFunction)
