@@ -71,12 +71,12 @@ Alternatively you can also use a CDN which will reflect the latest version.
    
 > `setup(node[, locale = 'en_US', options])`  
 
-> Add realtime updates to a dom element with `data-datetime` attribute.
+> Add realtime updates to a dom element with `data-intimeago-datetime` attribute.
 
 HTML code:
 
 ```html
-<div class="intimeago" data-datetime="2016-06-30 09:20:00"></div>
+<div class="intimeago" data-intimeago-datetime="2016-06-30 09:20:00"></div>
 ```
 
 JS code:
@@ -120,7 +120,8 @@ remove(node)
 
 - **format**
 
-> `format(date[, locale = 'en_US', opts])`, format a Date instance / timestamp / date string to static string.
+> `format(date[, locale = 'en_US', opts])`
+> format a Date instance / timestamp / date string to static string.
 
 ```ts
 import { format } from 'intimeago'
@@ -144,6 +145,56 @@ format(1605702147658, 'en_US', { relativeDate: '2020-10-04' })
 The default locale is `en_US`.
 
 [list of all locales here](src/lib/lang).
+
+- **importLocale**
+> Add new locale function to be used
+
+```ts
+import { importLocale } from 'intimeago'
+
+// create the translation function
+const myCoolLocaleFunction = function (number, index) {
+    return [
+     // [past tense , future tense] 
+     ['just now', 'in %s seconds'], // 0-10 seconds
+     ['%s seconds ago', 'in %s seconds'], // 10 - 60 seconds
+     ['1 minute ago', 'in 1 minute'], // 1-2 minutes
+     ['%s minutes ago', 'in %s minutes'], // 2 minutes - 1 hour
+     ['1 hour ago', 'in 1 hour'], // 
+     ['%s hours ago', 'in %s hours'],
+     ['1 day ago', 'in 1 day'],
+     ['%s days ago', 'in %s days'],
+     ['1 week ago', 'in 1 week'],
+     ['%s weeks ago', 'in %s weeks'],
+     ['1 month ago', 'in 1 month'],
+     ['%s months ago', 'in %s months'],
+     ['1 year ago', 'in 1 year'],
+     ['%s years ago', 'in %s years'],
+    ][index]
+}
+
+// import it
+importLocale('mycool_locale', myCoolLocaleFunction )
+
+// use it
+format(new Date(1605702147658), 'mycool_locale')
+
+``` 
+- **Tag Attributes**
+> The following attributes will automatically be used if present on intimeagoified html element:
+
+**data-intimeago-datetime** - datetime sting to calculate the difference from
+
+**data-intimeago-prepend-text** - text to prepend before the difference text ('Starts in 2 minutes')
+
+**data-intimeago-remove-on-zero** - remove the element from dom when difference is 0
+
+```html
+<div class="intimeago" 
+     data-intimeago-datetime="2016-06-30 09:20:00"
+     data-intimeago-prepend-text="Starts "
+     data-intimeago-remove-on-zero="true"></div>
+```
 
 ## NOTE
 This repo has been heavily inspired by hustcc/timeago.js. All the credits go to all involved.
