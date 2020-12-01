@@ -40,11 +40,6 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
   // get diff seconds
   const diff = diffSec(datetime, relativeDate)
 
-  if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
-    node.remove()
-    return
-  }
-
 
   const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME)
   // render
@@ -53,6 +48,11 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
   // Dispatch the event.
   // @ts-ignore
   node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { detail: { diff } }))
+
+  if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
+    node.remove()
+    return
+  }
 
   const nextInt = nextInterval(diff)
 
