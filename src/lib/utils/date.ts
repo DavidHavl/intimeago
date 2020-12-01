@@ -1,8 +1,8 @@
 import { LocaleFunction, TDatetime } from '../interface'
 
-const SEC_ARRAY = [
+const SEQUENCE_ARRAY = [
   60, // 60 seconds in 1 min
-  60, // 60 mins in 1 hour
+  60, // 60 minutes in 1 hour
   24, // 24 hours in 1 day
   7, // 7 days in 1 week
   365 / 7 / 12, // 4.345238095238096 weeks in 1 month
@@ -61,8 +61,8 @@ export function formatDiff(diff: number, localeFunction: LocaleFunction): string
    */
   let idx = 0
 
-  for (; diff >= SEC_ARRAY[idx] && idx < SEC_ARRAY.length; idx++) {
-    diff /= SEC_ARRAY[idx]
+  for (; diff >= SEQUENCE_ARRAY[idx] && idx < SEQUENCE_ARRAY.length; idx++) {
+    diff /= SEQUENCE_ARRAY[idx]
   }
 
   /**
@@ -97,22 +97,27 @@ export function diffSec(date: TDatetime, relativeDate?: TDatetime): number {
 
 /**
  * nextInterval: calculate the next interval time.
- * - diff: the diff sec between now and date to be formatted.
  *
- * What's the meaning?
- * diff = 61 then return 59
- * diff = 3601 (an hour + 1 second), then return 3599
- * make the interval with high performance.
+ * Examples:
+ * diff = 60 then it return 1 (so it runs again in 1 seconds and shows "in 59 seconds" )
+ * diff = 83 then it returns 23
+ * diff = 119 then it returns 59
+ * diff = 3601 (an hour + 1 second), then it returns 1
+ * @param diff {number} the difference in seconds between now and date to be formatted.
  **/
 export function nextInterval(diff: number): number {
-  let rst = 1,
-    i = 0,
-    d = Math.abs(diff)
-  for (; diff >= SEC_ARRAY[i] && i < SEC_ARRAY.length; i++) {
-    diff /= SEC_ARRAY[i]
-    rst *= SEC_ARRAY[i]
+  const diffAbs = Math.abs(diff)
+  if (diffAbs <= SEQUENCE_ARRAY[0]) {
+    return 1
   }
-  d = d % rst
-  d = d ? rst - d : rst
-  return Math.ceil(d)
+  let sv = 1,
+    i = 0,
+    d = diffAbs
+
+  for (; d >= SEQUENCE_ARRAY[i] && i < SEQUENCE_ARRAY.length; i++) {
+    d /= SEQUENCE_ARRAY[i]
+    sv *= SEQUENCE_ARRAY[i]
+  }
+  const remainder = diffAbs % sv
+  return Math.ceil(remainder > 0 ? remainder : 1)
 }
