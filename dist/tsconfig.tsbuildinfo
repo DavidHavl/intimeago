@@ -137,12 +137,12 @@
         "affectsGlobalScope": false
       },
       "../src/lib/lang/en_short.ts": {
-        "version": "e32c77ed5c594e4633cbd24c136f99a0a76bde677e6b2f35806a38a90c2e7bf6",
+        "version": "cff42c6bffaa1d72db8a5f45fe1e20241aea32247b29be3092d93a4f3e3de57a",
         "signature": "94251aac301e8a7cc551a54cef0a42089d0da7bfb645b6a3c472602bde4eb8c9",
         "affectsGlobalScope": false
       },
       "../src/lib/lang/en_us.ts": {
-        "version": "952e357d39f27c48d91bc43955b4e9c62428dbd73e04f5dc40a9c382039052fe",
+        "version": "9a428e868986a39bfa4d771fb4def08a8caf3a44928bca706b833339a80bd1d9",
         "signature": "8ad2eab850d1843e2434e18b53c403cd1c0b1be6533207c47fdbbec3d40e7697",
         "affectsGlobalScope": false
       },
@@ -317,8 +317,8 @@
         "affectsGlobalScope": false
       },
       "../src/lib/utils/date.ts": {
-        "version": "72baab99e9644689be85018a73368de74dbae65cc7a2ac22e2946000bd952dbb",
-        "signature": "89d6c585e74910dd3b0bd4091d397d75aa117337eed90808ca21c386e147c7fe",
+        "version": "68813f6281dc76fc46cd8c8f526e417d0a77425667a6c34bb2b6b45125c3f540",
+        "signature": "545f98a5d6cb09458a9899c6196284eb562f52c9453501277dcda382a8d049f2",
         "affectsGlobalScope": false
       },
       "../src/lib/utils/locale.ts": {
@@ -327,23 +327,13 @@
         "affectsGlobalScope": false
       },
       "../src/lib/index.ts": {
-        "version": "5a8645630d5ccb40873da98274f9fbaf663e2e938023e3d36bbb43a6136e99db",
-        "signature": "632836edaa4c97b13e8bdbca894cb6ba2dd70d8750c52936d8f6fd1f22d55cda",
+        "version": "cc4f71769f3e7913c0904ab03d4dc8c6e9eff69692a272369362e0182c86cec5",
+        "signature": "a020cc2b475c2f220467b91defb6691e7795c710df45c5c750321c95b7940ea8",
         "affectsGlobalScope": false
       },
       "../src/index.ts": {
         "version": "4661d84a63e8399a92836e0b72556f299aa3a73ec7d4e8c1a177b94b4ca5707e",
         "signature": "402410c3e135dc1cca690f28344ef3263b51ed79e05a5023ea8bc43bb83f0d03",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/ava/index.d.ts": {
-        "version": "0ceec7923fb2a6e540f73682c7acffe9124c9c3517a02eac27632844b8a61251",
-        "signature": "0ceec7923fb2a6e540f73682c7acffe9124c9c3517a02eac27632844b8a61251",
-        "affectsGlobalScope": false
-      },
-      "../src/lib/index.spec.ts": {
-        "version": "3da6894acbd49a21f7014582437e98552cf5f87a5cb71227839583d380502455",
-        "signature": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881",
         "affectsGlobalScope": false
       },
       "../src/lib/lang/cs.ts": {
@@ -406,10 +396,6 @@
     },
     "referencedMap": {
       "../src/index.ts": [
-        "../src/lib/index.ts"
-      ],
-      "../src/lib/index.spec.ts": [
-        "../node_modules/ava/index.d.ts",
         "../src/lib/index.ts"
       ],
       "../src/lib/index.ts": [
@@ -532,7 +518,6 @@
       ]
     },
     "semanticDiagnosticsPerFile": [
-      "../node_modules/ava/index.d.ts",
       "../node_modules/typescript/lib/lib.dom.d.ts",
       "../node_modules/typescript/lib/lib.es2015.collection.d.ts",
       "../node_modules/typescript/lib/lib.es2015.core.d.ts",
@@ -554,7 +539,6 @@
       "../node_modules/typescript/lib/lib.es2017.typedarrays.d.ts",
       "../node_modules/typescript/lib/lib.es5.d.ts",
       "../src/index.ts",
-      "../src/lib/index.spec.ts",
       "../src/lib/index.ts",
       "../src/lib/interface/index.ts",
       "../src/lib/lang/ar.ts",

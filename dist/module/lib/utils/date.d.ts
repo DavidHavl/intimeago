@@ -21,11 +21,12 @@ export declare function formatDiff(diff: number, localeFunction: LocaleFunction)
 export declare function diffSec(date: TDatetime, relativeDate?: TDatetime): number;
 /**
  * nextInterval: calculate the next interval time.
- * - diff: the diff sec between now and date to be formatted.
  *
- * What's the meaning?
- * diff = 61 then return 59
- * diff = 3601 (an hour + 1 second), then return 3599
- * make the interval with high performance.
+ * Examples:
+ * diff = 60 then it return 1 (so it runs again in 1 seconds and shows "in 59 seconds" )
+ * diff = 83 then it returns 23
+ * diff = 119 then it returns 59
+ * diff = 3601 (an hour + 1 second), then it returns 1
+ * @param diff {number} the difference in seconds between now and date to be formatted.
  **/
 export declare function nextInterval(diff: number): number;

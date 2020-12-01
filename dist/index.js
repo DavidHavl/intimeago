@@ -4,7 +4,7 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.intimeago = {}));
 }(this, (function (exports) { 'use strict';
 
-    const SEC_ARRAY = [
+    const SEQUENCE_ARRAY = [
         60,
         60,
         24,
@@ -62,8 +62,8 @@
          * Unit of time
          */
         let idx = 0;
-        for (; diff >= SEC_ARRAY[idx] && idx < SEC_ARRAY.length; idx++) {
-            diff /= SEC_ARRAY[idx];
+        for (; diff >= SEQUENCE_ARRAY[idx] && idx < SEQUENCE_ARRAY.length; idx++) {
+            diff /= SEQUENCE_ARRAY[idx];
         }
         /**
          * Math.floor() is alternative of ~~
@@ -93,22 +93,26 @@
     }
     /**
      * nextInterval: calculate the next interval time.
-     * - diff: the diff sec between now and date to be formatted.
      *
-     * What's the meaning?
-     * diff = 61 then return 59
-     * diff = 3601 (an hour + 1 second), then return 3599
-     * make the interval with high performance.
+     * Examples:
+     * diff = 60 then it return 1 (so it runs again in 1 seconds and shows "in 59 seconds" )
+     * diff = 83 then it returns 23
+     * diff = 119 then it returns 59
+     * diff = 3601 (an hour + 1 second), then it returns 1
+     * @param diff {number} the difference in seconds between now and date to be formatted.
      **/
     function nextInterval(diff) {
-        let rst = 1, i = 0, d = Math.abs(diff);
-        for (; diff >= SEC_ARRAY[i] && i < SEC_ARRAY.length; i++) {
-            diff /= SEC_ARRAY[i];
-            rst *= SEC_ARRAY[i];
+        const diffAbs = Math.abs(diff);
+        if (diffAbs <= SEQUENCE_ARRAY[0]) {
+            return 1;
         }
-        d = d % rst;
-        d = d ? rst - d : rst;
-        return Math.ceil(d);
+        let sv = 1, i = 0, d = diffAbs;
+        for (; d >= SEQUENCE_ARRAY[i] && i < SEQUENCE_ARRAY.length; i++) {
+            d /= SEQUENCE_ARRAY[i];
+            sv *= SEQUENCE_ARRAY[i];
+        }
+        const remainder = diffAbs % sv;
+        return Math.ceil(remainder > 0 ? remainder : 1);
     }
 
     const timeTypes = [
@@ -294,7 +298,7 @@
     // @ts-ignore
     function en_short (number, index) {
         return [
-            ['just now', 'right now'],
+            ['just now', 'in %ss'],
             ['%ss ago', 'in %ss'],
             ['1m ago', 'in 1m'],
             ['%sm ago', 'in %sm'],
@@ -314,11 +318,11 @@
     const EN_US = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
     // @ts-ignore
     function en_US (diff, idx) {
-        if (idx === 0)
-            return ['just now', 'right now'];
         let unit = EN_US[Math.floor(idx / 2)];
         if (diff > 1)
             unit += 's';
+        if (idx === 0)
+            return ['just now', `in ${diff} ${unit}`];
         return [`${diff} ${unit} ago`, `in ${diff} ${unit}`];
     }
 
@@ -1151,7 +1155,9 @@
      * @link:      https://github.com/DavidHavl/intimeago
      * @license    MIT
      */
-    const DATETIME_ATTRIBUTE_NAME = 'data-datetime';
+    const DATETIME_ATTRIBUTE_NAME = 'data-intimeago-datetime';
+    const PREPEND_TEXT_ATTRIBUTE_NAME = 'data-intimeago-prepend-text';
+    const REMOVE_ON_ZERO_ATTRIBUTE_NAME = 'data-intimeago-remove-on-zero';
     const UPDATE_EVENT_NAME = 'intimeago-update';
     const TIMER_POOL = {};
     const TIMER_ID_ATTRIBUTE_NAME = 'intimeago-timer-id';
@@ -1160,65 +1166,81 @@
      * @param node
      */
     const clearTimer = (node) => {
-        if (node.hasAttribute(TIMER_ID_ATTRIBUTE_NAME)) {
+        if (node && node.hasAttribute(TIMER_ID_ATTRIBUTE_NAME)) {
             const timerId = parseInt(String(node.getAttribute(TIMER_ID_ATTRIBUTE_NAME)));
             clearTimeout(timerId);
             delete TIMER_POOL[timerId];
         }
     };
     function runSingle(node, datetime, localeFunction, options) {
-        // clear the node's exist timer
+        // clear the node's existing timer
         clearTimer(node);
+        // check if still in the dome (has not been detached)
+        if (!node.isConnected) {
+            return;
+        }
         const { relativeDate } = options;
         // get diff seconds
         const diff = diffSec(datetime, relativeDate);
+        if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
+            node.remove();
+        }
+        const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME);
         // render
-        node.innerText = formatDiff(diff, localeFunction);
+        node.innerText = (prepend ? prepend : '') + formatDiff(diff, localeFunction);
         // Dispatch the event.
         // @ts-ignore
         node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { detail: { diff } }));
+        const nextInt = nextInterval(diff);
         const timerId = setTimeout(() => {
             runSingle(node, datetime, localeFunction, options);
-        }, Math.min(Math.max(nextInterval(diff), 1) * 1000, 0x7fffffff));
-        // there is no need to save node in object. Just save the key
-        TIMER_POOL[timerId] = 0;
+        }, Math.min(Math.max(nextInt, 1) * 1000, 0x7fffffff));
+        // Just the key is fine
+        TIMER_POOL[timerId] = 1;
         node.setAttribute(TIMER_ID_ATTRIBUTE_NAME, String(timerId));
     }
     /**
-     * Remove from dom element
-     * @param node - the node to remove the functionality from
+     * Remove from one or more elements
+     * @param nodes - the node/s to remove the functionality from
      */
-    function remove(node) {
-        // clear one node
-        if (node) {
-            clearTimer(node);
-        }
-        else {
-            // clear all timers
+    function remove(nodes) {
+        // clear one or more known nodes
+        if (nodes) {
             // @ts-ignore
-            Object.keys(TIMER_POOL).forEach(clear);
+            const nodeList = nodes.length ? nodes : [nodes];
+            for (const key in Object.keys(nodeList)) {
+                clearTimer(nodeList[key]);
+            }
+        }
+        // else clear all timers
+        else {
+            // @ts-ignore
+            Object.keys(TIMER_POOL).forEach((timerId) => {
+                clearTimeout(timerId);
+                delete TIMER_POOL[timerId];
+            });
         }
     }
     /**
      * Setup dom element/s
-     * @param elements
-     * @param locale
+     * @param nodes {HTMLElement | HTMLElement[] | NodeList}
+     * @param locale {LocaleName}
      * @param options
      */
-    function setup(elements, locale, options) {
+    function setup(nodes, locale, options) {
         locale = locale || 'en_US';
         // import needed locale
         if (!isLocaleImported(locale)) {
             importLocale(locale);
         }
         // @ts-ignore
-        const elementList = elements.length ? elements : [elements];
-        for (const key in Object.keys(elementList)) {
-            if (elementList[key].hasAttribute(DATETIME_ATTRIBUTE_NAME)) {
-                runSingle(elementList[key], String(elementList[key].getAttribute(DATETIME_ATTRIBUTE_NAME)), getLocale(locale), options || {});
+        const nodeList = nodes.length ? nodes : [nodes];
+        for (const key in Object.keys(nodeList)) {
+            if (nodeList[key].hasAttribute(DATETIME_ATTRIBUTE_NAME)) {
+                runSingle(nodeList[key], String(nodeList[key].getAttribute(DATETIME_ATTRIBUTE_NAME)), getLocale(locale), options || {});
             }
         }
-        return elementList;
+        return nodeList;
     }
     /**
      * Format the difference into string
@@ -1226,7 +1248,7 @@
      * @param locale
      * @param options
      */
-    const format = (date, locale, options) => {
+    function format(date, locale, options) {
         locale = locale || 'en_US';
         // import needed locale
         if (!isLocaleImported(locale)) {
@@ -1236,9 +1258,11 @@
         const sec = diffSec(date, options && options.relativeDate);
         // format it with locale
         return formatDiff(sec, getLocale(locale));
-    };
+    }
 
     exports.DATETIME_ATTRIBUTE_NAME = DATETIME_ATTRIBUTE_NAME;
+    exports.PREPEND_TEXT_ATTRIBUTE_NAME = PREPEND_TEXT_ATTRIBUTE_NAME;
+    exports.REMOVE_ON_ZERO_ATTRIBUTE_NAME = REMOVE_ON_ZERO_ATTRIBUTE_NAME;
     exports.UPDATE_EVENT_NAME = UPDATE_EVENT_NAME;
     exports.format = format;
     exports.remove = remove;

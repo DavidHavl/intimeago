@@ -4,24 +4,26 @@
  * @license    MIT
  */
 import { LocaleName, SetupOptions, TDatetime } from './interface';
-export declare const DATETIME_ATTRIBUTE_NAME = "data-datetime";
+export declare const DATETIME_ATTRIBUTE_NAME = "data-intimeago-datetime";
+export declare const PREPEND_TEXT_ATTRIBUTE_NAME = "data-intimeago-prepend-text";
+export declare const REMOVE_ON_ZERO_ATTRIBUTE_NAME = "data-intimeago-remove-on-zero";
 export declare const UPDATE_EVENT_NAME = "intimeago-update";
 /**
- * Remove from dom element
- * @param node - the node to remove the functionality from
+ * Remove from one or more elements
+ * @param nodes - the node/s to remove the functionality from
  */
-export declare function remove(node?: HTMLElement): void;
+export declare function remove(nodes: HTMLElement | HTMLElement[] | Node | NodeList): void;
 /**
  * Setup dom element/s
- * @param elements
- * @param locale
+ * @param nodes {HTMLElement | HTMLElement[] | NodeList}
+ * @param locale {LocaleName}
  * @param options
  */
-export declare function setup(elements: HTMLElement | HTMLElement[] | NodeList, locale?: LocaleName, options?: SetupOptions): HTMLElement[];
+export declare function setup(nodes: HTMLElement | HTMLElement[] | NodeList, locale?: LocaleName, options?: SetupOptions): HTMLElement[];
 /**
  * Format the difference into string
  * @param date
  * @param locale
  * @param options
  */
-export declare const format: (date: TDatetime, locale?: "ar" | "be" | "bg" | "bn_IN" | "ca" | "de" | "el" | "en_short" | "en_US" | "es" | "eu" | "fa" | "fi" | "fr" | "gl" | "he" | "hi_IN" | "hu" | "id_ID" | "it" | "ja" | "ko" | "ml" | "my" | "nb_NO" | "nl" | "nn_NO" | "pl" | "pt_BR" | "ro" | "ru" | "sq" | "sr" | "sv" | "ta" | "th" | "tr" | "uk" | "vi" | "zh_CN" | "zh_TW" | undefined, options?: SetupOptions | undefined) => string;
+export declare function format(date: TDatetime, locale?: LocaleName, options?: SetupOptions): string;
