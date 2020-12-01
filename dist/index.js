@@ -1184,6 +1184,7 @@
         const diff = diffSec(datetime, relativeDate);
         if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
             node.remove();
+            return;
         }
         const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME);
         // render
