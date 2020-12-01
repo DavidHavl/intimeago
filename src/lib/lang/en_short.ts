@@ -1,7 +1,7 @@
 // @ts-ignore
 export default function (number: number, index: number): [string, string] {
   return [
-    ['just now', 'right now'],
+    ['just now', 'in %ss'],
     ['%ss ago', 'in %ss'],
     ['1m ago', 'in 1m'],
     ['%sm ago', 'in %sm'],
