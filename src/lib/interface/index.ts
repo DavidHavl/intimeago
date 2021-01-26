@@ -11,6 +11,6 @@ export type TDatetime = Date | string | number;
 export type TimerPool = Record<number, number>;
 
 export interface SetupOptions {
-  /** the relative date to count from */
-  readonly relativeDate?: TDatetime;
+  /** the relative datetime to count from */
+  readonly relativeDateTime?: TDatetime;
 }

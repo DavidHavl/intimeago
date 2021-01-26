@@ -1,12 +1,12 @@
 {
-  "name": "@davidhavl/intimeago",
-  "version": "1.0.0",
-  "description": "Convert dom elements with static datetime info into real-time 'in time' / 'time ago'.",
+  "name": "intimeago",
+  "version": "1.1.0",
+  "description": "Convert dom elements with static datetime info into real-time 'in time' / 'time ago' elements.",
   "author": "David Havl",
   "main": "dist/main/index.js",
   "typings": "dist/main/index.d.ts",
   "module": "dist/module/index.js",
-  "unpkg": "dist/index.min.js",
+  "unpkg": "dist/intimeago.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/DavidHavl/intimeago.git"
@@ -19,7 +19,7 @@
     "intimeago"
   ],
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "build": "run-p build:*",

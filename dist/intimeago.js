@@ -1156,6 +1156,7 @@
      * @license    MIT
      */
     const DATETIME_ATTRIBUTE_NAME = 'data-intimeago-datetime';
+    const RELATIVE_DATETIME_ATTRIBUTE_NAME = 'data-intimeago-relative-datetime';
     const PREPEND_TEXT_ATTRIBUTE_NAME = 'data-intimeago-prepend-text';
     const REMOVE_ON_ZERO_ATTRIBUTE_NAME = 'data-intimeago-remove-on-zero';
     const UPDATE_EVENT_NAME = 'intimeago-update';
@@ -1179,11 +1180,18 @@
         if (!node.isConnected) {
             return;
         }
-        const { relativeDate } = options;
-        // get diff seconds
-        const diff = diffSec(datetime, relativeDate);
+        // Relative datetime option
+        let relativeDateTime = new Date();
+        if (options && options.relativeDateTime) {
+            relativeDateTime = options.relativeDateTime;
+        }
+        else if (node.hasAttribute(RELATIVE_DATETIME_ATTRIBUTE_NAME)) {
+            relativeDateTime = node.getAttribute(RELATIVE_DATETIME_ATTRIBUTE_NAME) + '';
+        }
+        // Get diff seconds
+        const diff = diffSec(datetime, relativeDateTime);
         const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME);
-        // render
+        // Render
         node.innerText = (prepend ? prepend : '') + formatDiff(diff, localeFunction);
         // Dispatch the event.
         // @ts-ignore
@@ -1196,7 +1204,7 @@
         const timerId = setTimeout(() => {
             runSingle(node, datetime, localeFunction, options);
         }, Math.min(Math.max(nextInt, 1) * 1000, 0x7fffffff));
-        // Just the key is fine
+        // Just the key itself is more performant
         TIMER_POOL[timerId] = 1;
         node.setAttribute(TIMER_ID_ATTRIBUTE_NAME, String(timerId));
     }
@@ -1205,7 +1213,7 @@
      * @param nodes - the node/s to remove the functionality from
      */
     function remove(nodes) {
-        // clear one or more known nodes
+        // Clear one or more known nodes
         if (nodes) {
             // @ts-ignore
             const nodeList = nodes.length ? nodes : [nodes];
@@ -1230,7 +1238,7 @@
      */
     function setup(nodes, locale, options) {
         locale = locale || 'en_US';
-        // import needed locale
+        // Import needed locale
         if (!isLocaleImported(locale)) {
             importLocale(locale);
         }
@@ -1251,18 +1259,19 @@
      */
     function format(date, locale, options) {
         locale = locale || 'en_US';
-        // import needed locale
+        // Import needed locale
         if (!isLocaleImported(locale)) {
             importLocale(locale);
         }
-        // diff seconds
-        const sec = diffSec(date, options && options.relativeDate);
-        // format it with locale
+        // Diff seconds
+        const sec = diffSec(date, options && options.relativeDateTime);
+        // Format it with locale
         return formatDiff(sec, getLocale(locale));
     }
 
     exports.DATETIME_ATTRIBUTE_NAME = DATETIME_ATTRIBUTE_NAME;
     exports.PREPEND_TEXT_ATTRIBUTE_NAME = PREPEND_TEXT_ATTRIBUTE_NAME;
+    exports.RELATIVE_DATETIME_ATTRIBUTE_NAME = RELATIVE_DATETIME_ATTRIBUTE_NAME;
     exports.REMOVE_ON_ZERO_ATTRIBUTE_NAME = REMOVE_ON_ZERO_ATTRIBUTE_NAME;
     exports.UPDATE_EVENT_NAME = UPDATE_EVENT_NAME;
     exports.format = format;
@@ -1272,4 +1281,4 @@
     Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=intimeago.js.map

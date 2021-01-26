@@ -5,6 +5,7 @@
  */
 import { LocaleName, SetupOptions, TDatetime } from './interface';
 export declare const DATETIME_ATTRIBUTE_NAME = "data-intimeago-datetime";
+export declare const RELATIVE_DATETIME_ATTRIBUTE_NAME = "data-intimeago-relative-datetime";
 export declare const PREPEND_TEXT_ATTRIBUTE_NAME = "data-intimeago-prepend-text";
 export declare const REMOVE_ON_ZERO_ATTRIBUTE_NAME = "data-intimeago-remove-on-zero";
 export declare const UPDATE_EVENT_NAME = "intimeago-update";

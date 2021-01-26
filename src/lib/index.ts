@@ -9,6 +9,7 @@ import { diffSec, formatDiff, nextInterval } from './utils/date'
 import { getLocale, importLocale, isLocaleImported } from './utils/locale'
 
 export const DATETIME_ATTRIBUTE_NAME = 'data-intimeago-datetime'
+export const RELATIVE_DATETIME_ATTRIBUTE_NAME = 'data-intimeago-relative-datetime'
 export const PREPEND_TEXT_ATTRIBUTE_NAME = 'data-intimeago-prepend-text'
 export const REMOVE_ON_ZERO_ATTRIBUTE_NAME = 'data-intimeago-remove-on-zero'
 export const UPDATE_EVENT_NAME = 'intimeago-update'
@@ -35,14 +36,21 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
   if (!node.isConnected) {
     return
   }
-    const { relativeDate } = options
 
-  // get diff seconds
-  const diff = diffSec(datetime, relativeDate)
+  // Relative datetime option
+  let relativeDateTime: Date | string | number = new Date()
+  if (options && options.relativeDateTime) {
+    relativeDateTime = options.relativeDateTime
+  } else if (node.hasAttribute(RELATIVE_DATETIME_ATTRIBUTE_NAME)) {
+    relativeDateTime = node.getAttribute(RELATIVE_DATETIME_ATTRIBUTE_NAME) + ''
+  }
+
+  // Get diff seconds
+  const diff = diffSec(datetime, relativeDateTime)
 
 
   const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME)
-  // render
+  // Render
   node.innerText = (prepend ? prepend : '') + formatDiff(diff, localeFunction)
 
   // Dispatch the event.
@@ -60,7 +68,7 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
     runSingle(node, datetime, localeFunction, options)
   }, Math.min(Math.max(nextInt, 1) * 1000, 0x7fffffff)) as unknown) as number
 
-  // Just the key is fine
+  // Just the key itself is more performant
   TIMER_POOL[timerId] = 1
   node.setAttribute(TIMER_ID_ATTRIBUTE_NAME, String(timerId))
 }
@@ -70,7 +78,7 @@ function runSingle(node: HTMLElement, datetime: string, localeFunction: LocaleFu
  * @param nodes - the node/s to remove the functionality from
  */
 export function remove(nodes: HTMLElement | HTMLElement[] | Node | NodeList): void {
-  // clear one or more known nodes
+  // Clear one or more known nodes
   if (nodes) {
     // @ts-ignore
     const nodeList: HTMLElement[] = nodes.length ? nodes : [nodes]
@@ -96,7 +104,7 @@ export function remove(nodes: HTMLElement | HTMLElement[] | Node | NodeList): vo
  */
 export function setup (nodes: HTMLElement | HTMLElement[] | NodeList, locale?: LocaleName, options?: SetupOptions) {
   locale = locale || 'en_US'
-  // import needed locale
+  // Import needed locale
   if (!isLocaleImported(locale)) {
     importLocale(locale)
   }
@@ -121,13 +129,13 @@ export function setup (nodes: HTMLElement | HTMLElement[] | NodeList, locale?: L
 export function format (date: TDatetime, locale?: LocaleName, options?: SetupOptions): string {
 
   locale = locale || 'en_US'
-  // import needed locale
+  // Import needed locale
   if (!isLocaleImported(locale)) {
     importLocale(locale)
   }
 
-  // diff seconds
-  const sec = diffSec(date, options && options.relativeDate)
-  // format it with locale
+  // Diff seconds
+  const sec = diffSec(date, options && options.relativeDateTime)
+  // Format it with locale
   return formatDiff(sec, getLocale(locale))
 }

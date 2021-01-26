@@ -34,6 +34,6 @@ const getConfig = ({ outputFile, isMinify }) => {
 }
 
 export default [
-  getConfig({ outputFile: 'dist/index.js' }),
-  getConfig({ outputFile: 'dist/index.min.js', isMinify: true })
+  getConfig({ outputFile: 'dist/intimeago.js' }),
+  getConfig({ outputFile: 'dist/intimeago.min.js', isMinify: true })
 ]

@@ -5,6 +5,6 @@ export declare type LocaleName = keyof typeof localeFunctions;
 export declare type TDatetime = Date | string | number;
 export declare type TimerPool = Record<number, number>;
 export interface SetupOptions {
-    /** the relative date to count from */
-    readonly relativeDate?: TDatetime;
+    /** the relative datetime to count from */
+    readonly relativeDateTime?: TDatetime;
 }

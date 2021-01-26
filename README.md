@@ -25,13 +25,13 @@ in 4 months
 ```
 ## Usage
 
- - install
+ - Install
 
 ```bash
 npm install intimeago
 ```
 
- - import
+ - Import
 
 ```ts
 import { setup, remove, format } from 'intimeago'
@@ -40,21 +40,31 @@ import { setup, remove, format } from 'intimeago'
 or import with `script` tag in html file and access it via global variable `intimeago`.
 
 ```html
-<script src="dist/intimeago.min.js"></script>
+<script src="dist/index.min.js"></script>
 ```
 
- - example
-
+ - Example
+```html
+<div class="intimeago" data-intimeago-datetime="2016-06-30 09:20:00"></div>
+```
 ```ts
 // Setup dom elements with realtime changes
-setup(document.querySelectorAll('[data-datetime]')) 
+setup(document.querySelectorAll('[data-intimeago-datetime]')) 
 
 // OR
 
 // Format the datetime and return as static string
 format('2020-11-18T12:03:57+00:00')
 ```
+- Advanced example
 
+```html
+<div class="intimeago" 
+     data-intimeago-datetime="2016-06-30 09:20:00"
+     data-intimeago-relative-datetime="2010-01-05 13:10:00"
+     data-intimeago-prepend-text="Starts "
+     data-intimeago-remove-on-zero="true"></div>
+```
 ## CDN 
 
 Alternatively you can also use a CDN which will reflect the latest version.
@@ -69,9 +79,9 @@ Alternatively you can also use a CDN which will reflect the latest version.
 
  - **setup**
    
-> `setup(node[, locale = 'en_US', options])`  
+`setup(node[, locale = 'en_US', options])`  
 
-> Add realtime updates to a dom element with `data-intimeago-datetime` attribute.
+Add realtime updates to a dom element with `data-intimeago-datetime` attribute.
 
 HTML code:
 
@@ -92,20 +102,21 @@ setup(nodes)
 // OR
 
 // set locale and relative date to calculate the difference from
-setup(nodes, 'en_US', { relativeDate: '2020-10-04' })
+setup(nodes, 'en_US', { relativeDateTime: '2016-10-04 13:30:00' })
 
 // subscribe to an event that happens on update (change of text of the element)
 node.addEventListener('intimeago-update', (e) => {
- // e.detail.diff // difference between the specified date and now/relativeDate (in seconds)
+ // e.detail.diff // difference between the specified date and now/relativeDateTime (in seconds)
 })
 ```
 
+Options: - `relativeDateTime` allows you to set the date and time to calculate the difference from. Default is NOW. 
 
  - **remove**
    
-> `remove(node)`
+`remove(node)`
 
-> Remove the realtime updates from a dom element.
+Remove the realtime updates from a dom element.
 
 JS code:
 
@@ -120,8 +131,9 @@ remove(node)
 
 - **format**
 
-> `format(date[, locale = 'en_US', opts])`
-> format a Date instance / timestamp / date string to static string.
+`format(date[, locale = 'en_US', opts])`
+
+Format a Date instance / timestamp / date string to static string.
 
 ```ts
 import { format } from 'intimeago'
@@ -139,7 +151,7 @@ format('2020-11-18T12:23:28.410Z')
 format(1605702147658, 'en_US')
 
 // format with locale and relative date
-format(1605702147658, 'en_US', { relativeDate: '2020-10-04' })
+format(1605702147658, 'en_US', { relativeDateTime: '2010-10-04 10:45:00' })
 ``` 
 
 The default locale is `en_US`.
@@ -185,13 +197,16 @@ format(new Date(1605702147658), 'mycool_locale')
 
 **data-intimeago-datetime** - datetime sting to calculate the difference from
 
+**data-intimeago-relative-datetime** - datetime sting to calculate the difference relative to. Default is NOW.
+
 **data-intimeago-prepend-text** - text to prepend before the difference text ('Starts in 2 minutes')
 
 **data-intimeago-remove-on-zero** - remove the element from dom when difference is 0
 
 ```html
-<div class="intimeago" 
+<div class="intimeago"
      data-intimeago-datetime="2016-06-30 09:20:00"
+     data-intimeago-relative-datetime="2010-01-05 13:10:00"
      data-intimeago-prepend-text="Starts "
      data-intimeago-remove-on-zero="true"></div>
 ```
