@@ -4,7 +4,7 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.intimeago = {}));
 }(this, (function (exports) { 'use strict';
 
-    const SEQUENCE_ARRAY = [
+    var SEQUENCE_ARRAY = [
         60,
         60,
         24,
@@ -50,7 +50,7 @@
          * If `time in`, then 1
          * If `time ago`, then 0
          */
-        const agoIn = diff < 0 ? 1 : 0;
+        var agoIn = diff < 0 ? 1 : 0;
         /**
          * Get absolute value of number (|diff| is non-negative) value of x
          * |diff| = diff if diff is positive
@@ -61,7 +61,7 @@
         /**
          * Unit of time
          */
-        let idx = 0;
+        var idx = 0;
         for (; diff >= SEQUENCE_ARRAY[idx] && idx < SEQUENCE_ARRAY.length; idx++) {
             diff /= SEQUENCE_ARRAY[idx];
         }
@@ -88,7 +88,7 @@
      * @returns {number}
      */
     function diffSec(date, relativeDate) {
-        const relDate = relativeDate ? toDate(relativeDate) : new Date();
+        var relDate = relativeDate ? toDate(relativeDate) : new Date();
         return (+relDate - +toDate(date)) / 1000;
     }
     /**
@@ -102,20 +102,20 @@
      * @param diff {number} the difference in seconds between now and date to be formatted.
      **/
     function nextInterval(diff) {
-        const diffAbs = Math.abs(diff);
+        var diffAbs = Math.abs(diff);
         if (diffAbs <= SEQUENCE_ARRAY[0]) {
             return 1;
         }
-        let sv = 1, i = 0, d = diffAbs;
+        var sv = 1, i = 0, d = diffAbs;
         for (; d >= SEQUENCE_ARRAY[i] && i < SEQUENCE_ARRAY.length; i++) {
             d /= SEQUENCE_ARRAY[i];
             sv *= SEQUENCE_ARRAY[i];
         }
-        const remainder = diffAbs % sv;
+        var remainder = diffAbs % sv;
         return Math.ceil(remainder > 0 ? remainder : 1);
     }
 
-    const timeTypes = [
+    var timeTypes = [
         ['ثانية', 'ثانيتين', '%s ثوان', '%s ثانية'],
         ['دقيقة', 'دقيقتين', '%s دقائق', '%s دقيقة'],
         ['ساعة', 'ساعتين', '%s ساعات', '%s ساعة'],
@@ -136,7 +136,7 @@
         if (index === 0) {
             return ['منذ لحظات', 'بعد لحظات'];
         }
-        const timeStr = formatTime(Math.floor(index / 2), number);
+        var timeStr = formatTime(Math.floor(index / 2), number);
         return ['منذ' + ' ' + timeStr, 'بعد' + ' ' + timeStr];
     }
 
@@ -150,8 +150,8 @@
      * @returns
      */
     function formatNum(f1, f, s, t, n) {
-        const n10 = n % 10;
-        let str = t;
+        var n10 = n % 10;
+        var str = t;
         if (n === 1) {
             str = f1;
         }
@@ -163,7 +163,7 @@
         }
         return str;
     }
-    const seconds = formatNum.bind(null, 'секунду', '%s секунду', '%s секунды', '%s секунд'), minutes = formatNum.bind(null, 'хвіліну', '%s хвіліну', '%s хвіліны', '%s хвілін'), hours = formatNum.bind(null, 'гадзіну', '%s гадзіну', '%s гадзіны', '%s гадзін'), days = formatNum.bind(null, 'дзень', '%s дзень', '%s дні', '%s дзён'), weeks = formatNum.bind(null, 'тыдзень', '%s тыдзень', '%s тыдні', '%s тыдняў'), months = formatNum.bind(null, 'месяц', '%s месяц', '%s месяцы', '%s месяцаў'), years = formatNum.bind(null, 'год', '%s год', '%s гады', '%s гадоў');
+    var seconds = formatNum.bind(null, 'секунду', '%s секунду', '%s секунды', '%s секунд'), minutes = formatNum.bind(null, 'хвіліну', '%s хвіліну', '%s хвіліны', '%s хвілін'), hours = formatNum.bind(null, 'гадзіну', '%s гадзіну', '%s гадзіны', '%s гадзін'), days = formatNum.bind(null, 'дзень', '%s дзень', '%s дні', '%s дзён'), weeks = formatNum.bind(null, 'тыдзень', '%s тыдзень', '%s тыдні', '%s тыдняў'), months = formatNum.bind(null, 'месяц', '%s месяц', '%s месяцы', '%s месяцаў'), years = formatNum.bind(null, 'год', '%s год', '%s гады', '%s гадоў');
     // @ts-ignore
     function be (number, index) {
         switch (index) {
@@ -315,15 +315,15 @@
         ][index];
     }
 
-    const EN_US = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
+    var EN_US = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
     // @ts-ignore
     function en_US (diff, idx) {
-        let unit = EN_US[Math.floor(idx / 2)];
+        var unit = EN_US[Math.floor(idx / 2)];
         if (diff > 1)
             unit += 's';
         if (idx === 0)
-            return ['just now', `in ${diff} ${unit}`];
-        return [`${diff} ${unit} ago`, `in ${diff} ${unit}`];
+            return ['just now', "in " + diff + " " + unit];
+        return [diff + " " + unit + " ago", "in " + diff + " " + unit];
     }
 
     // @ts-ignore
@@ -370,12 +370,12 @@
     // to standard persian numbres.
     function toPersianNumber(number) {
         // List of standard persian numbers from 0 to 9
-        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        return number.toString().replace(/\d/g, (x) => persianDigits[parseInt(x)]);
+        var persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return number.toString().replace(/\d/g, function (x) { return persianDigits[parseInt(x)]; });
     }
     // @ts-ignore
     function fa (number, index) {
-        const formattedString = [
+        var formattedString = [
             ['لحظاتی پیش', 'همین حالا'],
             ['%s ثانیه پیش', '%s ثانیه دیگر'],
             ['۱ دقیقه پیش', '۱ دقیقه دیگر'],
@@ -704,7 +704,7 @@
     // genitive plural form for all other numbers excluding cases below:
     // 14-20: nominative plural form for the numbers 2,3,4
     // and all other numbers higher than 21 which end in 2,3,4
-    const l = [
+    var l = [
         ['w tej chwili', 'za chwilę'],
         ['%s sekund temu', 'za %s sekund'],
         ['1 minutę temu', 'za 1 minutę'],
@@ -757,7 +757,7 @@
 
     // @ts-ignore
     function ro (number, index) {
-        const langTable = [
+        var langTable = [
             ['chiar acum', 'chiar acum'],
             ['acum %s secunde', 'peste %s secunde'],
             ['acum un minut', 'peste un minut'],
@@ -791,8 +791,8 @@
      * @returns
      */
     function formatNum$1(f1, f, s, t, n) {
-        const n10 = n % 10;
-        let str = t;
+        var n10 = n % 10;
+        var str = t;
         if (n === 1) {
             str = f1;
         }
@@ -804,7 +804,7 @@
         }
         return str;
     }
-    const seconds$1 = formatNum$1.bind(null, 'секунду', '%s секунду', '%s секунды', '%s секунд'), minutes$1 = formatNum$1.bind(null, 'минуту', '%s минуту', '%s минуты', '%s минут'), hours$1 = formatNum$1.bind(null, 'час', '%s час', '%s часа', '%s часов'), days$1 = formatNum$1.bind(null, 'день', '%s день', '%s дня', '%s дней'), weeks$1 = formatNum$1.bind(null, 'неделю', '%s неделю', '%s недели', '%s недель'), months$1 = formatNum$1.bind(null, 'месяц', '%s месяц', '%s месяца', '%s месяцев'), years$1 = formatNum$1.bind(null, 'год', '%s год', '%s года', '%s лет');
+    var seconds$1 = formatNum$1.bind(null, 'секунду', '%s секунду', '%s секунды', '%s секунд'), minutes$1 = formatNum$1.bind(null, 'минуту', '%s минуту', '%s минуты', '%s минут'), hours$1 = formatNum$1.bind(null, 'час', '%s час', '%s часа', '%s часов'), days$1 = formatNum$1.bind(null, 'день', '%s день', '%s дня', '%s дней'), weeks$1 = formatNum$1.bind(null, 'неделю', '%s неделю', '%s недели', '%s недель'), months$1 = formatNum$1.bind(null, 'месяц', '%s месяц', '%s месяца', '%s месяцев'), years$1 = formatNum$1.bind(null, 'год', '%s год', '%s года', '%s лет');
     // @ts-ignore
     function ru (number, index) {
         switch (index) {
@@ -857,8 +857,8 @@
     }
 
     function formatNum$2(single, one, few, other, n) {
-        const rem10 = n % 10;
-        const rem100 = n % 100;
+        var rem10 = n % 10;
+        var rem100 = n % 100;
         if (n == 1) {
             return single;
         }
@@ -872,7 +872,7 @@
             return other;
         }
     }
-    const seconds$2 = formatNum$2.bind(null, '1 секунд', '%s секунд', '%s секунде', '%s секунди'), minutes$2 = formatNum$2.bind(null, '1 минут', '%s минут', '%s минуте', '%s минута'), hours$2 = formatNum$2.bind(null, 'сат времена', '%s сат', '%s сата', '%s сати'), days$2 = formatNum$2.bind(null, '1 дан', '%s дан', '%s дана', '%s дана'), weeks$2 = formatNum$2.bind(null, 'недељу дана', '%s недељу', '%s недеље', '%s недеља'), months$2 = formatNum$2.bind(null, 'месец дана', '%s месец', '%s месеца', '%s месеци'), years$2 = formatNum$2.bind(null, 'годину дана', '%s годину', '%s године', '%s година');
+    var seconds$2 = formatNum$2.bind(null, '1 секунд', '%s секунд', '%s секунде', '%s секунди'), minutes$2 = formatNum$2.bind(null, '1 минут', '%s минут', '%s минуте', '%s минута'), hours$2 = formatNum$2.bind(null, 'сат времена', '%s сат', '%s сата', '%s сати'), days$2 = formatNum$2.bind(null, '1 дан', '%s дан', '%s дана', '%s дана'), weeks$2 = formatNum$2.bind(null, 'недељу дана', '%s недељу', '%s недеље', '%s недеља'), months$2 = formatNum$2.bind(null, 'месец дана', '%s месец', '%s месеца', '%s месеци'), years$2 = formatNum$2.bind(null, 'годину дана', '%s годину', '%s године', '%s година');
     // @ts-ignore
     function sr (number, index) {
         switch (index) {
@@ -984,8 +984,8 @@
     }
 
     function formatNum$3(f1, f, s, t, n) {
-        const n10 = n % 10;
-        let str = t;
+        var n10 = n % 10;
+        var str = t;
         if (n === 1) {
             str = f1;
         }
@@ -997,7 +997,7 @@
         }
         return str;
     }
-    const seconds$3 = formatNum$3.bind(null, 'секунду', '%s секунду', '%s секунди', '%s секунд'), minutes$3 = formatNum$3.bind(null, 'хвилину', '%s хвилину', '%s хвилини', '%s хвилин'), hours$3 = formatNum$3.bind(null, 'годину', '%s годину', '%s години', '%s годин'), days$3 = formatNum$3.bind(null, 'день', '%s день', '%s дні', '%s днів'), weeks$3 = formatNum$3.bind(null, 'тиждень', '%s тиждень', '%s тиждні', '%s тижднів'), months$3 = formatNum$3.bind(null, 'місяць', '%s місяць', '%s місяці', '%s місяців'), years$3 = formatNum$3.bind(null, 'рік', '%s рік', '%s роки', '%s років');
+    var seconds$3 = formatNum$3.bind(null, 'секунду', '%s секунду', '%s секунди', '%s секунд'), minutes$3 = formatNum$3.bind(null, 'хвилину', '%s хвилину', '%s хвилини', '%s хвилин'), hours$3 = formatNum$3.bind(null, 'годину', '%s годину', '%s години', '%s годин'), days$3 = formatNum$3.bind(null, 'день', '%s день', '%s дні', '%s днів'), weeks$3 = formatNum$3.bind(null, 'тиждень', '%s тиждень', '%s тиждні', '%s тижднів'), months$3 = formatNum$3.bind(null, 'місяць', '%s місяць', '%s місяці', '%s місяців'), years$3 = formatNum$3.bind(null, 'рік', '%s рік', '%s роки', '%s років');
     // @ts-ignore
     function uk (number, index) {
         switch (index) {
@@ -1048,13 +1048,13 @@
         ][index];
     }
 
-    const ZH_CN = ['秒', '分钟', '小时', '天', '周', '个月', '年'];
+    var ZH_CN = ['秒', '分钟', '小时', '天', '周', '个月', '年'];
     // @ts-ignore
     function zh_CN (diff, idx) {
         if (idx === 0)
             return ['刚刚', '片刻后'];
-        const unit = ZH_CN[~~(idx / 2)];
-        return [`${diff} ${unit}前`, `${diff} ${unit}后`];
+        var unit = ZH_CN[~~(idx / 2)];
+        return [diff + " " + unit + "\u524D", diff + " " + unit + "\u540E"];
     }
 
     // @ts-ignore
@@ -1125,12 +1125,12 @@
     /**
      * All supported locales
      */
-    const Locales = {};
+    var Locales = {};
     /**
      * Import a locale by name
      * @param locale
      */
-    const importLocale = (locale) => {
+    var importLocale = function (locale) {
         Locales[locale] = localeFunctions[locale];
     };
     /**
@@ -1138,7 +1138,7 @@
      * @param locale
      * @returns {*}
      */
-    const isLocaleImported = (locale) => {
+    var isLocaleImported = function (locale) {
         return !!Locales[locale];
     };
     /**
@@ -1146,7 +1146,7 @@
      * @param locale
      * @returns {*}
      */
-    const getLocale = (locale) => {
+    var getLocale = function (locale) {
         return locale && Locales[locale] ? Locales[locale] : Locales['en_US'];
     };
 
@@ -1155,20 +1155,20 @@
      * @link:      https://github.com/DavidHavl/intimeago
      * @license    MIT
      */
-    const DATETIME_ATTRIBUTE_NAME = 'data-intimeago-datetime';
-    const RELATIVE_DATETIME_ATTRIBUTE_NAME = 'data-intimeago-relative-datetime';
-    const PREPEND_TEXT_ATTRIBUTE_NAME = 'data-intimeago-prepend-text';
-    const REMOVE_ON_ZERO_ATTRIBUTE_NAME = 'data-intimeago-remove-on-zero';
-    const UPDATE_EVENT_NAME = 'intimeago-update';
-    const TIMER_POOL = {};
-    const TIMER_ID_ATTRIBUTE_NAME = 'intimeago-timer-id';
+    var DATETIME_ATTRIBUTE_NAME = 'data-intimeago-datetime';
+    var RELATIVE_DATETIME_ATTRIBUTE_NAME = 'data-intimeago-relative-datetime';
+    var PREPEND_TEXT_ATTRIBUTE_NAME = 'data-intimeago-prepend-text';
+    var REMOVE_ON_ZERO_ATTRIBUTE_NAME = 'data-intimeago-remove-on-zero';
+    var UPDATE_EVENT_NAME = 'intimeago-update';
+    var TIMER_POOL = {};
+    var TIMER_ID_ATTRIBUTE_NAME = 'intimeago-timer-id';
     /**
      * Clear a node update timer
      * @param node
      */
-    const clearTimer = (node) => {
+    var clearTimer = function (node) {
         if (node && node.hasAttribute(TIMER_ID_ATTRIBUTE_NAME)) {
-            const timerId = parseInt(String(node.getAttribute(TIMER_ID_ATTRIBUTE_NAME)));
+            var timerId = parseInt(String(node.getAttribute(TIMER_ID_ATTRIBUTE_NAME)));
             clearTimeout(timerId);
             delete TIMER_POOL[timerId];
         }
@@ -1181,7 +1181,7 @@
             return;
         }
         // Relative datetime option
-        let relativeDateTime = new Date();
+        var relativeDateTime = new Date();
         if (options && options.relativeDateTime) {
             relativeDateTime = options.relativeDateTime;
         }
@@ -1189,19 +1189,19 @@
             relativeDateTime = node.getAttribute(RELATIVE_DATETIME_ATTRIBUTE_NAME) + '';
         }
         // Get diff seconds
-        const diff = diffSec(datetime, relativeDateTime);
-        const prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME);
+        var diff = diffSec(datetime, relativeDateTime);
+        var prepend = node.getAttribute(PREPEND_TEXT_ATTRIBUTE_NAME);
         // Render
         node.innerText = (prepend ? prepend : '') + formatDiff(diff, localeFunction);
         // Dispatch the event.
         // @ts-ignore
-        node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { detail: { diff } }));
+        node.dispatchEvent(new CustomEvent(UPDATE_EVENT_NAME, { detail: { diff: diff } }));
         if (node.getAttribute(REMOVE_ON_ZERO_ATTRIBUTE_NAME) && Math.floor(diff) === 0) {
             node.remove();
             return;
         }
-        const nextInt = nextInterval(diff);
-        const timerId = setTimeout(() => {
+        var nextInt = nextInterval(diff);
+        var timerId = setTimeout(function () {
             runSingle(node, datetime, localeFunction, options);
         }, Math.min(Math.max(nextInt, 1) * 1000, 0x7fffffff));
         // Just the key itself is more performant
@@ -1216,15 +1216,15 @@
         // Clear one or more known nodes
         if (nodes) {
             // @ts-ignore
-            const nodeList = nodes.length ? nodes : [nodes];
-            for (const key in Object.keys(nodeList)) {
+            var nodeList = nodes.length ? nodes : [nodes];
+            for (var key in Object.keys(nodeList)) {
                 clearTimer(nodeList[key]);
             }
         }
         // else clear all timers
         else {
             // @ts-ignore
-            Object.keys(TIMER_POOL).forEach((timerId) => {
+            Object.keys(TIMER_POOL).forEach(function (timerId) {
                 clearTimeout(timerId);
                 delete TIMER_POOL[timerId];
             });
@@ -1243,8 +1243,8 @@
             importLocale(locale);
         }
         // @ts-ignore
-        const nodeList = nodes.length ? nodes : [nodes];
-        for (const key in Object.keys(nodeList)) {
+        var nodeList = nodes.length ? nodes : [nodes];
+        for (var key in Object.keys(nodeList)) {
             if (nodeList[key].hasAttribute(DATETIME_ATTRIBUTE_NAME)) {
                 runSingle(nodeList[key], String(nodeList[key].getAttribute(DATETIME_ATTRIBUTE_NAME)), getLocale(locale), options || {});
             }
@@ -1264,7 +1264,7 @@
             importLocale(locale);
         }
         // Diff seconds
-        const sec = diffSec(date, options && options.relativeDateTime);
+        var sec = diffSec(date, options && options.relativeDateTime);
         // Format it with locale
         return formatDiff(sec, getLocale(locale));
     }

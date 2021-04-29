@@ -17,7 +17,7 @@ const getConfig = ({ outputFile, isMinify }) => {
         tsconfig: false, // ignore options in the tsconfig.json file and use the ones here instead
         rootDir: 'src',
         module: 'esnext',
-        target: 'es6',
+        target: 'es5',
         moduleResolution: 'node',
         esModuleInterop: true,
         strict: true,
